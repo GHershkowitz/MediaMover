@@ -9,21 +9,31 @@ foldersToDeleteArray = []
 # ask for the directory the user wants to use
 location = askdirectory(initialdir="C:/Users/Greg/Downloads/Media")
 
+
+with open("extensionsToMove.txt") as f:
+    extensionsToMove = f.readlines()
+# you may also want to remove whitespace characters like `\n` at the end
+# of each line
+extensionsToMove = [x.strip() for x in extensionsToMove]
+
+extensionListSize = len(extensionsToMove)
+
+
 for path, subdirs, files in os.walk(location):
     for filename in sorted(files):
         f = os.path.join(path, filename)
         # searching for files ending with this extensions
-        if filename.endswith("avi") or filename.endswith("mp4") or filename.endswith("mkv") or filename.endswith("m4v"):
-            SearchResultFileName = (os.path.split(f)[1])
-            # print "this is searchResult " + str(SearchResultFileName)
-            twoFoldersUp = os.path.normpath(os.path.join(f, '../../'))
-            print twoFoldersUp
+        for num in range(0, extensionListSize):
+            if filename.endswith(extensionsToMove[num]):
+                SearchResultFileName = (os.path.split(f)[1])
+                # print "this is searchResult " + str(SearchResultFileName)
+                twoFoldersUp = os.path.normpath(os.path.join(f, '../../'))
 
-            oneFolderUp = os.path.normpath(os.path.join(f, '../'))
-            if(oneFolderUp not in foldersToDeleteArray):
-                foldersToDeleteArray.append(oneFolderUp)
+                oneFolderUp = os.path.normpath(os.path.join(f, '../'))
+                if(oneFolderUp not in foldersToDeleteArray):
+                    foldersToDeleteArray.append(oneFolderUp)
 
-            shutil.move(f, twoFoldersUp)
+                shutil.move(f, twoFoldersUp)
 
 for item in foldersToDeleteArray:
     shutil.rmtree(item)
