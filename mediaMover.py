@@ -7,7 +7,7 @@ Tk().withdraw()  # we don't want a full GUI, so keep the root window from appear
 # show an "Open" dialog box and return the path to the selected file
 foldersToDeleteArray = []
 # ask for the directory the user wants to use
-location = askdirectory(initialdir="C:/Users/Greg/Downloads/Media")
+location = askdirectory()
 
 for path, subdirs, files in os.walk(location):
     for filename in sorted(files):
